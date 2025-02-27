@@ -1,0 +1,33 @@
+{
+    "files.associations": {
+        "*.h": "c",
+        "anomaly_detection.h": "c",
+        "behavior_simulation.h": "c",
+        "binary_converter.h": "c",
+        "collaboration_nodes.h": "c",
+        "data_ingestion.h": "c",
+        "environment_simulation.h": "c",
+        "global_ethics_system.h": "c",
+        "kaleidoscope_engine.h": "c",
+        "learning_feedback.h": "c",
+        "membrane.h": "c",
+        "memory_graph.h": "c",
+        "mirrored_engine.h": "c",
+        "node_core.h": "c",
+        "predictive_modeling.h": "c",
+        "resource_optimization.h": "c",
+        "self_diagnostic.h": "c",
+        "task_manager.h": "c",
+        "visualization_tools.h": "c"
+    },
+    "python.analysis.typeCheckingMode": "basic",
+    "python.testing.unittestArgs": [
+        "-v",
+        "-s",
+        "./python",
+        "-p",
+        "*test*.py"
+    ],
+    "python.testing.pytestEnabled": false,
+    "python.testing.unittestEnabled": true
+}
