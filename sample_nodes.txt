@@ -1,0 +1,7 @@
+# Sample node definitions for testing
+# Format: name, x, y, z, energy, stability
+Node1, 0.5, 0.5, 0.5, 0.9, 0.8
+Node2, -0.5, 0.5, 0.5, 0.8, 0.7
+Node3, 0.5, -0.5, 0.5, 0.7, 0.9
+Node4, 0.5, 0.5, -0.5, 0.9, 0.6
+Node5, -0.5, -0.5, 0.5, 0.6, 0.8

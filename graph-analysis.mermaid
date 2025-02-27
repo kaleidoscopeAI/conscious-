@@ -1,0 +1,70 @@
+graph TD
+    A[External Inputs] --> B(Perception Layer)
+    B --> C{Quantum Processing}
+    C --> D[Graph Memory]
+    D --> E[Self-Reflective Network]
+    E --> F{Cognitive Processing}
+    F --> G[Internal Thought]
+    F --> H[Response Generation]
+    
+    I[Quantum Circuit Graph] -.-> C
+    J[Supernode Network] -.-> F
+    K[Memory Graph] -.-> D
+    L[Reflection Graph] -.-> E
+    
+    %% Feedback loops
+    G --> E
+    H --> D
+    E --> C
+    
+    %% Optimization paths
+    M[System Optimization] --> I
+    M --> J
+    M --> K
+    M --> L
+    
+    %% Self-reflection
+    N[Deep Reflection] --> O[Awareness Assessment]
+    E --> N
+    D --> N
+    C --> N
+    F --> N
+    O --> E
+
+    subgraph "Low-Level Layer"
+        I
+    end
+    
+    subgraph "Memory Layer"
+        D
+        K
+    end
+    
+    subgraph "Processing Layer"
+        C
+        J
+        F
+    end
+    
+    subgraph "Conscious Layer"
+        E
+        L
+        G
+        H
+    end
+    
+    subgraph "Meta Layer"
+        M
+        N
+        O
+    end
+
+    classDef quantum fill:#f9f,stroke:#333,stroke-width:2px
+    classDef memory fill:#bbf,stroke:#333,stroke-width:1px
+    classDef conscious fill:#bfb,stroke:#333,stroke-width:1px
+    classDef meta fill:#fbb,stroke:#333,stroke-width:1px
+    
+    class C,I quantum
+    class D,K memory
+    class E,G,H,L conscious
+    class M,N,O meta

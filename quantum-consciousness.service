@@ -1,0 +1,12 @@
+[Unit]
+Description=Quantum Consciousness System
+After=network.target
+
+[Service]
+User=USERNAME
+WorkingDirectory=/home/USERNAME/quantum-consciousness
+ExecStart=/home/USERNAME/quantum-consciousness/start_server.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
