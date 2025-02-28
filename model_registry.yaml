@@ -1,0 +1,15 @@
+models:
+  base:
+    repository: consciousai/conscious-base
+    revision: v2.1.0
+    hash: sha256:abc123...
+    parameters: 1.8B
+    precision: fp16
+    trained_date: 2024-02-15
+
+  ethical-module:
+    repository: consciousai/ethical-module
+    revision: v1.0.1
+    hash: sha256:def456...
+    parameters: 350M
+    precision: fp32
