@@ -26,6 +26,7 @@ void get_ingested_data(DataIngestionLayer* layer);
 void destroy_data_ingestion_layer(DataIngestionLayer* layer);
 
 #endif // DATA_INGESTION_H
+```
 
 #include "data_ingestion.h"
 

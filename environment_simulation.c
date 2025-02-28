@@ -4,11 +4,16 @@
 
 // Initialize the Environment Simulation
 EnvironmentSimulation* init_environment_simulation(uint64_t max_states) {
+    printf("Initializing Environment Simulation with max_states=%lu\n", max_states);
     EnvironmentSimulation* simulation = (EnvironmentSimulation*)malloc(sizeof(EnvironmentSimulation));
-    if (!simulation) return NULL;
+    if (!simulation) {
+        printf("Failed to allocate memory for EnvironmentSimulation\n");
+        return NULL;
+    }
 
     simulation->states = (EnvironmentState*)malloc(sizeof(EnvironmentState) * max_states);
     if (!simulation->states) {
+        printf("Failed to allocate memory for EnvironmentState array\n");
         free(simulation);
         return NULL;
     }
@@ -22,7 +27,15 @@ EnvironmentSimulation* init_environment_simulation(uint64_t max_states) {
 
 // Update the Environment State
 void update_environment_state(EnvironmentSimulation* simulation, uint64_t data, uint64_t conditions) {
-    if (!simulation || simulation->state_count >= simulation->max_states) return;
+    printf("Updating Environment State with data=%lu, conditions=%lu\n", data, conditions);
+    if (!simulation) {
+        printf("Simulation is NULL\n");
+        return;
+    }
+    if (simulation->state_count >= simulation->max_states) {
+        printf("Reached maximum state capacity\n");
+        return;
+    }
 
     EnvironmentState* state = &simulation->states[simulation->state_count++];
     state->external_data = data;
@@ -34,7 +47,15 @@ void update_environment_state(EnvironmentSimulation* simulation, uint64_t data, 
 
 // Simulate Interaction with the Environment
 void simulate_interaction(EnvironmentSimulation* simulation, uint64_t node_id) {
-    if (!simulation || simulation->state_count == 0) return;
+    printf("Simulating interaction for node_id=%lu\n", node_id);
+    if (!simulation) {
+        printf("Simulation is NULL\n");
+        return;
+    }
+    if (simulation->state_count == 0) {
+        printf("No states available to interact with\n");
+        return;
+    }
 
     EnvironmentState* current_state = &simulation->states[simulation->state_count - 1];
     current_state->interaction_count++;
@@ -45,7 +66,11 @@ void simulate_interaction(EnvironmentSimulation* simulation, uint64_t node_id) {
 
 // Display the Environment State
 void display_environment(EnvironmentSimulation* simulation) {
-    if (!simulation) return;
+    printf("Displaying Environment States\n");
+    if (!simulation) {
+        printf("Simulation is NULL\n");
+        return;
+    }
 
     printf("\n--- Environment States ---\n");
     for (uint64_t i = 0; i < simulation->state_count; i++) {
@@ -58,9 +83,12 @@ void display_environment(EnvironmentSimulation* simulation) {
 
 // Destroy the Environment Simulation
 void destroy_environment_simulation(EnvironmentSimulation* simulation) {
+    printf("Destroying Environment Simulation\n");
     if (simulation) {
         free(simulation->states);
         free(simulation);
         printf("Environment Simulation destroyed.\n");
+    } else {
+        printf("Simulation is NULL\n");
     }
 }

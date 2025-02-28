@@ -26,6 +26,7 @@ body {
     font-weight: bold;
     font-size: 1.5rem;
     background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -177,4 +178,13 @@ footer {
 
 .spinner-border {
     animation: spinner-border 0.75s linear infinite, pulse 2s infinite;
+}
+
+/* Debug styles */
+.debug-border {
+    border: 2px dashed red;
+}
+
+.debug-bg {
+    background-color: rgba(255, 0, 0, 0.1);
 }

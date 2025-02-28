@@ -65,4 +65,27 @@ class TopologicalLayer(nn.Module):
         components = self._extract_components(distances)
         
         return PersistenceFeatures(
-            diagrams=diagrams
+            diagrams=diagrams,
+            bottleneck_distances=bottleneck_distances,
+            landscape_features=landscapes,
+            connected_components=components
+        )
+
+    def _compute_landscapes(self, diagrams: List[np.ndarray]) -> torch.Tensor:
+        # Compute persistence landscapes
+        landscapes = []
+        for diagram in diagrams:
+            landscape = d.Landscape(diagram)
+            landscapes.append(landscape)
+        # Convert to torch tensor
+        return torch.tensor(landscapes)
+
+    def _extract_components(self, distances: np.ndarray) -> List[List[int]]:
+        # Extract connected components using NetworkX
+        G = nx.Graph()
+        for i in range(len(distances)):
+            for j in range(i+1, len(distances)):
+                if distances[i, j] > 0:
+                    G.add_edge(i, j, weight=distances[i, j])
+        components = [list(c) for c in nx.connected_components(G)]
+        return components

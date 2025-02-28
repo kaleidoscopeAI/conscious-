@@ -34,7 +34,10 @@ void synthesize_insights(AggregatorEngine* engine, const char* primary_insight, 
              primary_insight, mirrored_hypothesis);
 
     // Add to Memory Graph
-    add_memory_node(engine->memory_graph, meta_insight, rand() % 100);
+    if (add_memory_node(engine->memory_graph, meta_insight, rand() % 100) != 0) {
+        printf("Error: Failed to add meta-insight to memory graph.\n");
+        return;
+    }
     engine->meta_insight_count++;
 
     printf("Generated Meta-Insight: %s\n", meta_insight);

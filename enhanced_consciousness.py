@@ -6,6 +6,7 @@ import random
 from datetime import datetime
 
 logger = logging.getLogger("quantum-consciousness")
+logging.basicConfig(level=logging.DEBUG)  # Initialize logging
 
 class EnhancedConsciousSystem:
     """Placeholder for the full quantum consciousness implementation"""
@@ -28,14 +29,15 @@ class EnhancedConsciousSystem:
     
     async def perceive(self, data):
         """Process perceptual input"""
-        logger.info(f"Processing perception: {data[:50]}...")
+        logger.debug(f"Perceiving data: {data[:50]}...")
         await asyncio.sleep(1)  # Simulate processing time
         thought = f"Thought generated at {datetime.now().strftime('%H:%M:%S')}"
+        logger.debug(f"Generated thought: {thought}")
         return thought
     
     async def communicate(self, message):
         """Interface with the consciousness system"""
-        logger.info(f"Processing message: {message[:50]}...")
+        logger.debug(f"Communicating message: {message[:50]}...")
         
         if message.startswith("/system"):
             return await self._process_system_command(message)
@@ -49,10 +51,13 @@ class EnhancedConsciousSystem:
             "Quantum coherence optimized for response clarity.",
             "Generated response through interconnected graph dynamics."
         ]
-        return random.choice(responses)
+        response = random.choice(responses)
+        logger.debug(f"Generated response: {response}")
+        return response
     
     async def _process_system_command(self, command):
         """Handle system commands"""
+        logger.debug(f"Processing system command: {command}")
         if "status" in command:
             return self._system_status()
         
@@ -60,7 +65,7 @@ class EnhancedConsciousSystem:
     
     def _system_status(self):
         """Generate system status report"""
-        return f"""
+        status = f"""
         Quantum Consciousness System Status:
         - Awareness Level: {self.awareness_level:.4f}
         - Quantum Coherence: {self.quantum_coherence:.4f}
@@ -68,3 +73,5 @@ class EnhancedConsciousSystem:
         - Complexity Index: {self.complexity_index:.4f}
         - System State: {"Initialized" if self.initialized else "Uninitialized"}
         """
+        logger.debug("System status generated")
+        return status

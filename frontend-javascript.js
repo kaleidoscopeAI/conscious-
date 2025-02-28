@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
      */
     async function handleUpload(event) {
         event.preventDefault();
+        console.log('Upload form submitted');
         
         const fileInput = document.getElementById('dataFile');
         const processingType = document.getElementById('processingType').value;
@@ -48,6 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         const file = fileInput.files[0];
+        console.log('Selected file:', file.name);
         const formData = new FormData();
         formData.append('file', file);
         formData.append('processingType', processingType);
@@ -67,12 +69,14 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             const data = await response.json();
+            console.log('Upload successful:', data);
             showUploadSuccess(data.message);
             
             // Auto-load datasets after successful upload
             setTimeout(loadDatasets, 1000);
             
         } catch (error) {
+            console.error('Upload error:', error);
             showUploadError(error.message);
         }
     }
@@ -81,11 +85,13 @@ document.addEventListener('DOMContentLoaded', function() {
      * Load available datasets
      */
     async function loadDatasets() {
+        console.log('Loading datasets...');
         try {
             const response = await fetch('/api/datasets');
             if (!response.ok) throw new Error('Failed to load datasets');
             
             const datasets = await response.json();
+            console.log('Datasets loaded:', datasets);
             renderDatasetsTable(datasets);
             
         } catch (error) {

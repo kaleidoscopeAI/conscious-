@@ -1,3 +1,6 @@
+import numpy as np
+from typing import Optional, Dict
+
 class EvolvingNodeDNA:
     """DNA structure for nodes that evolves over time through mutations and inheritance"""
     
@@ -23,7 +26,8 @@ class EvolvingNodeDNA:
         
         # Fixed genetic sequence (for pattern matching and inheritance)
         self.genetic_code = self._generate_genetic_code()
-    
+        print(f"Initialized EvolvingNodeDNA with traits: {self.traits}")
+
     def _generate_genetic_code(self) -> str:
         """Generate a DNA-like sequence encoding traits"""
         # Convert traits to a binary-like string representation
@@ -32,11 +36,12 @@ class EvolvingNodeDNA:
             # Convert value to binary-like string segment
             binary_val = format(int(value * 255), '08b')
             gene += binary_val
-            
+        print(f"Generated genetic code: {gene}")
         return gene
     
     def mutate(self) -> None:
         """Apply random mutations to traits"""
+        print(f"Mutating DNA at generation {self.generation}")
         mutated_traits = {}
         mutation_record = []
         
@@ -52,6 +57,7 @@ class EvolvingNodeDNA:
                 
                 mutated_traits[trait] = new_value
                 mutation_record.append((trait, value, new_value))
+                print(f"Trait {trait} mutated from {value} to {new_value}")
             else:
                 mutated_traits[trait] = value
         
@@ -62,6 +68,7 @@ class EvolvingNodeDNA:
                 'generation': self.generation,
                 'mutations': mutation_record
             })
+            print(f"Mutation record: {mutation_record}")
             
         # Update generation and genetic code
         self.generation += 1
@@ -69,6 +76,7 @@ class EvolvingNodeDNA:
     
     def crossover(self, other_dna: 'EvolvingNodeDNA') -> 'EvolvingNodeDNA':
         """Create a new DNA by crossing over with another DNA"""
+        print(f"Performing crossover with another DNA at generation {self.generation}")
         if np.random.random() > self.crossover_rate:
             # No crossover - return copy of self with possible mutations
             child_dna = EvolvingNodeDNA(
@@ -77,6 +85,7 @@ class EvolvingNodeDNA:
                 crossover_rate=self.crossover_rate
             )
             child_dna.mutate()
+            print("No crossover occurred, returning mutated copy of self")
             return child_dna
         
         # Perform crossover
@@ -98,11 +107,13 @@ class EvolvingNodeDNA:
         
         # Apply mutation to child
         child_dna.mutate()
+        print(f"Crossover occurred, created child DNA with traits: {child_traits}")
         
         return child_dna
     
     def genetic_similarity(self, other_dna: 'EvolvingNodeDNA') -> float:
         """Calculate genetic similarity between two DNA structures"""
+        print("Calculating genetic similarity")
         # Compare genetic codes
         code1 = self.genetic_code
         code2 = other_dna.genetic_code
@@ -116,14 +127,18 @@ class EvolvingNodeDNA:
         matching_bits = sum(c1 == c2 for c1, c2 in zip(code1, code2))
         
         # Calculate similarity (1.0 = identical, 0.0 = completely different)
-        return matching_bits / max_len
+        similarity = matching_bits / max_len
+        print(f"Genetic similarity: {similarity}")
+        return similarity
     
     def get_trait_influence(self) -> Dict[str, float]:
         """Calculate influence factors for node interactions based on traits"""
-        return {
+        influence = {
             'energy_transfer': self.traits['energy_efficiency'] * self.traits['connection_strength'],
             'tension_response': self.traits['tension_sensitivity'] * self.traits['adaptability'],
             'quantum_effect': self.traits['quantum_coupling'],
             'memory_effect': self.traits['memory_retention'] * self.traits['learning_rate'],
             'adaptation_rate': self.traits['adaptability'] * self.traits['learning_rate']
         }
+        print(f"Trait influence: {influence}")
+        return influence

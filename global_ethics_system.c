@@ -30,10 +30,11 @@ uint8_t evaluate_action(GlobalEthicsSystem* system, EthicalDecision* decision) {
 void enforce_ethics(GlobalEthicsSystem* system, uint64_t node_id, EthicalDecision* decision) {
     if (!system || !decision) return;
 
+    printf("Enforcing ethics on node %lu...\n", node_id);
     if (evaluate_action(system, decision)) {
-        printf("Node %lu: Task approved based on ethical guidelines.\n", node_id);
+        printf("Node %lu: Task approved (Ethical Score: %u).\n", node_id, system->ethical_threshold);
     } else {
-        printf("Node %lu: Task rejected due to insufficient ethical compliance.\n", node_id);
+        printf("Node %lu: Task rejected (Ethical Score: %u below threshold).\n", node_id, system->ethical_threshold);
     }
 }
 

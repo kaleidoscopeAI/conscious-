@@ -15,6 +15,7 @@ SimulationLayer* init_simulation_layer(uint64_t max_simulations) {
     layer->simulations = (SimulationResult*)malloc(sizeof(SimulationResult) * max_simulations);
     layer->max_simulations = max_simulations;
     layer->current_simulations = 0;
+    pthread_mutex_init(&layer->mutex, NULL); // Initialize mutex
 
     printf("Simulation Layer initialized with capacity for %lu simulations.\n", max_simulations);
     return layer;
@@ -27,8 +28,11 @@ void run_simulation(SimulationLayer* layer, const char* meta_insight) {
         return;
     }
 
+    pthread_mutex_lock(&layer->mutex); // Lock mutex
+
     if (layer->current_simulations >= layer->max_simulations) {
         printf("Simulation Layer: Simulation queue full.\n");
+        pthread_mutex_unlock(&layer->mutex); // Unlock mutex
         return;
     }
 
@@ -40,6 +44,8 @@ void run_simulation(SimulationLayer* layer, const char* meta_insight) {
     result.is_valid = rand() % 2; // Randomly validate or reject
 
     layer->simulations[layer->current_simulations++] = result;
+
+    pthread_mutex_unlock(&layer->mutex); // Unlock mutex
 
     if (result.is_valid) {
         printf("Simulation Output: Validated - %s\n", result.description);
@@ -55,6 +61,8 @@ void get_simulation_results(SimulationLayer* layer) {
         return;
     }
 
+    pthread_mutex_lock(&layer->mutex); // Lock mutex
+
     printf("\n--- Simulation Results ---\n");
     for (uint64_t i = 0; i < layer->current_simulations; i++) {
         printf("Result %lu: %s (Valid: %s)\n", i + 1,
@@ -62,11 +70,14 @@ void get_simulation_results(SimulationLayer* layer) {
                layer->simulations[i].is_valid ? "Yes" : "No");
     }
     printf("--- End of Results ---\n");
+
+    pthread_mutex_unlock(&layer->mutex); // Unlock mutex
 }
 
 // Destroy Simulation Layer
 void destroy_simulation_layer(SimulationLayer* layer) {
     if (layer) {
+        pthread_mutex_destroy(&layer->mutex); // Destroy mutex
         free(layer->simulations);
         free(layer);
         printf("Simulation Layer destroyed.\n");

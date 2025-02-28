@@ -28,7 +28,6 @@ void destroy_environment_simulation(EnvironmentSimulation* simulation);
 
 #endif // ENVIRONMENT_SIMULATION_H
 
-#include "environment_simulation.h"
 
 // Initialize the Environment Simulation
 EnvironmentSimulation* init_environment_simulation(uint64_t max_states) {

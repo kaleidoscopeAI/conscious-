@@ -4,8 +4,13 @@
 #include "final_kaleidoscope_engine.h"
 #include "memory_graph.h"
 
+void debug(const char* message) {
+    printf("[DEBUG]: %s\n", message);
+}
+
 // Initialize Final Kaleidoscope Engine
 FinalEngine* init_final_engine(MemoryGraph* memory_graph) {
+    debug("Initializing Final Kaleidoscope Engine.");
     FinalEngine* engine = (FinalEngine*)malloc(sizeof(FinalEngine));
     if (!engine) {
         printf("Error: Failed to allocate memory for Final Kaleidoscope Engine.\n");
@@ -21,6 +26,7 @@ FinalEngine* init_final_engine(MemoryGraph* memory_graph) {
 
 // Generate Master Insight
 void generate_master_insight(FinalEngine* engine, const char* meta_insight) {
+    debug("Generating master insight.");
     if (!engine || !meta_insight) {
         printf("Final Engine: Invalid meta-insight.\n");
         return;
@@ -41,6 +47,7 @@ void generate_master_insight(FinalEngine* engine, const char* meta_insight) {
 
 // Cleanup Final Kaleidoscope Engine
 void destroy_final_engine(FinalEngine* engine) {
+    debug("Destroying Final Kaleidoscope Engine.");
     if (engine) {
         printf("Destroying Final Kaleidoscope Engine.\n");
         free(engine);

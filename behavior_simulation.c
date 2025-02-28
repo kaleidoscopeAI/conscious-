@@ -33,16 +33,14 @@ void simulate_interactions(BehaviorSimulation* simulation) {
 
     printf("Simulating interactions...\n");
     for (uint64_t i = 0; i < simulation->node_count; i++) {
-        for (uint64_t j = 0; j < simulation->node_count; j++) {
-            if (i != j) {
-                SimulationNode* node1 = &simulation->nodes[i];
-                SimulationNode* node2 = &simulation->nodes[j];
-                if (abs((int64_t)(node1->energy - node2->energy)) < simulation->interaction_threshold) {
-                    uint64_t energy_exchange = (node1->energy - node2->energy) / 2;
-                    node1->energy -= energy_exchange;
-                    node2->energy += energy_exchange;
-                    printf("Node %lu exchanged energy with Node %lu. New energies: %lu, %lu\n", node1->id, node2->id, node1->energy, node2->energy);
-                }
+        for (uint64_t j = i + 1; j < simulation->node_count; j++) {
+            SimulationNode* node1 = &simulation->nodes[i];
+            SimulationNode* node2 = &simulation->nodes[j];
+            if (abs((int64_t)(node1->energy - node2->energy)) < simulation->interaction_threshold) {
+                int64_t energy_exchange = (node1->energy - node2->energy) / 2;
+                node1->energy -= energy_exchange;
+                node2->energy += energy_exchange;
+                printf("Node %lu exchanged energy with Node %lu. New energies: %lu, %lu\n", node1->id, node2->id, node1->energy, node2->energy);
             }
         }
     }

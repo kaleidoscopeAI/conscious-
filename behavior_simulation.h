@@ -32,6 +32,7 @@ void destroy_behavior_simulation(BehaviorSimulation* simulation);
 
 // Initialize the Behavior Simulation
 BehaviorSimulation* init_behavior_simulation(uint64_t node_count, uint64_t interaction_threshold) {
+    printf("Initializing behavior simulation with %lu nodes and interaction threshold %lu\n", node_count, interaction_threshold);
     BehaviorSimulation* simulation = (BehaviorSimulation*)malloc(sizeof(BehaviorSimulation));
     if (!simulation) return NULL;
 
@@ -110,6 +111,7 @@ void run_simulation(BehaviorSimulation* simulation, uint64_t cycles) {
 // Destroy the Behavior Simulation
 void destroy_behavior_simulation(BehaviorSimulation* simulation) {
     if (simulation) {
+        printf("Destroying behavior simulation\n");
         free(simulation->nodes);
         free(simulation);
     }

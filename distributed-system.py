@@ -12,6 +12,7 @@ from dataclasses import dataclass
 import asyncio
 import zmq
 import zmq.asyncio
+import logging  # Added for logging
 
 @dataclass
 class ProcessingNode:
@@ -26,6 +27,10 @@ class DistributedProcessor:
                  world_size: int,
                  hdim: int = 10000,
                  n_qubits: int = 8):
+        logging.basicConfig(level=logging.DEBUG)  # Initialize logging
+        self.logger = logging.getLogger(__name__)
+        self.logger.debug("Initializing DistributedProcessor")
+        
         self.world_size = world_size
         self.hdim = hdim
         self.n_qubits = n_qubits
@@ -44,9 +49,11 @@ class DistributedProcessor:
         self.result_queue = Queue()
         
     def init_distributed(self):
+        self.logger.debug("Initializing distributed backends")
         # Initialize MPI
         self.comm = MPI.COMM_WORLD
         rank = self.comm.Get_rank()
+        self.logger.debug(f"MPI rank: {rank}")
         
         # Initialize PyTorch distributed
         dist.init_process_group(
@@ -54,13 +61,17 @@ class DistributedProcessor:
             rank=rank,
             world_size=self.world_size
         )
+        self.logger.debug("PyTorch distributed initialized")
         
         # Initialize Horovod
         hvd.init()
+        self.logger.debug("Horovod initialized")
         
     def create_nodes(self) -> List[ProcessingNode]:
+        self.logger.debug("Creating processing nodes")
         nodes = []
         for rank in range(self.world_size):
+            self.logger.debug(f"Creating node for rank {rank}")
             node = ProcessingNode(
                 rank=rank,
                 world_size=self.world_size,
@@ -97,8 +108,10 @@ class DistributedProcessor:
             }
             
     async def process_data(self, data: torch.Tensor):
+        self.logger.debug("Processing data")
         # Split data across nodes
         chunks = torch.chunk(data, self.world_size)
+        self.logger.debug(f"Data split into {len(chunks)} chunks")
         
         # Create Ray actors
         actors = [
@@ -114,16 +127,18 @@ class DistributedProcessor:
         
         # Gather results
         results = await asyncio.gather(*[
-            asyncio.wrap_future(ray.get(future))
-            for future in futures
+            ray.get(future) for future in futures
         ])
+        self.logger.debug("Results gathered from Ray actors")
         
         # Combine results
         combined = self.combine_results(results)
+        self.logger.debug("Results combined")
         
         return combined
         
     def combine_results(self, results: List[Dict[str, Any]]) -> Dict[str, Any]:
+        self.logger.debug("Combining results")
         # Sort by rank
         results = sorted(results, key=lambda x: x['rank'])
         
@@ -138,4 +153,6 @@ class DistributedProcessor:
         ])
         
         return {
-            'topology':
+            'topology': combined_topology,
+            'quantum': combined_quantum
+        }

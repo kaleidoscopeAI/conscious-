@@ -11,6 +11,7 @@ import asyncio
 import ray
 from mpi4py import MPI
 import horovod.torch as hvd
+import logging  # Added for logging
 
 @dataclass
 class TensorShard:
@@ -22,6 +23,10 @@ class DistributedTensorManager:
     def __init__(self, 
                  world_size: int,
                  device: Optional[torch.device] = None):
+        logging.basicConfig(level=logging.DEBUG)  # Initialize logging
+        self.logger = logging.getLogger(__name__)
+        self.logger.debug("Initializing DistributedTensorManager")
+        
         self.world_size = world_size
         self.device = device or torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self.comm = MPI.COMM_WORLD
@@ -32,6 +37,7 @@ class DistributedTensorManager:
     def distribute_tensor(self, 
                          tensor: torch.Tensor,
                          strategy: str = 'block') -> str:
+        self.logger.debug(f"Distributing tensor with strategy: {strategy}")
         tensor_id = self._generate_id()
         
         if strategy == 'block':
@@ -50,9 +56,11 @@ class DistributedTensorManager:
             for i, shard in enumerate(shards)
         }
         
+        self.logger.debug(f"Tensor {tensor_id} distributed")
         return tensor_id
         
     def _block_partition(self, tensor: torch.Tensor) -> List[TensorShard]:
+        self.logger.debug("Performing block partition")
         n_dims = tensor.dim()
         dim_sizes = tensor.size()
         
@@ -78,9 +86,11 @@ class DistributedTensorManager:
                 dimension=split_dim
             ))
             
+        self.logger.debug("Block partition completed")
         return shards
         
     def _cyclic_partition(self, tensor: torch.Tensor) -> List[TensorShard]:
+        self.logger.debug("Performing cyclic partition")
         n_dims = tensor.dim()
         dim_sizes = tensor.size()
         
@@ -114,6 +124,7 @@ class DistributedTensorManager:
                     dimension=split_dim
                 ))
                 
+        self.logger.debug("Cyclic partition completed")
         return result_shards
         
     def _get_shard_metadata(self, shard: TensorShard) -> Dict:
@@ -129,6 +140,7 @@ class DistributedTensorManager:
         
     @ray.remote
     def gather_tensor(self, tensor_id: str) -> torch.Tensor:
+        self.logger.debug(f"Gathering tensor {tensor_id}")
         # Get metadata for all shards
         all_metadata = self.comm.allgather(
             self.shard_map[tensor_id][self.rank]
@@ -136,4 +148,18 @@ class DistributedTensorManager:
         
         # Determine final tensor shape
         max_dim = max(meta['dimension'] for meta in all_metadata)
-        shape = list(all_metadata[0
+        shape = list(all_metadata[0]['shape'])
+        shape[max_dim] = sum(meta['shape'][max_dim] for meta in all_metadata)
+        
+        # Allocate tensor
+        result = torch.empty(shape, device=self.device)
+        
+        # Gather shards
+        for meta in all_metadata:
+            shard = self.tensor_store[tensor_id]
+            slices = [slice(None)] * len(shape)
+            slices[max_dim] = slice(meta['indices'][0], meta['indices'][-1] + 1)
+            result[slices] = shard.data
+            
+        self.logger.debug(f"Tensor {tensor_id} gathered")
+        return result

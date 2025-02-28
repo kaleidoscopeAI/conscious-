@@ -1,3 +1,12 @@
+#ifndef BINARY_CONVERTER_H
+#define BINARY_CONVERTER_H
+
+// Function declarations
+char* to_binary(const char* input);
+char* from_binary(const char* binary);
+
+#endif // BINARY_CONVERTER_H
+
 #ifndef DATA_INGESTION_H
 #define DATA_INGESTION_H
 
