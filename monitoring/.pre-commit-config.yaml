@@ -1,0 +1,9 @@
+repos:
+- repo: local
+  hooks:
+    - id: model-versioning
+      name: Verify Model Versions
+      entry: python scripts/model_versioning.py
+      language: system
+      files: ^models/
+      types: [binary]
