@@ -1,0 +1,11 @@
+# Development mode
+./conscious.sh dev
+
+# Production mode
+./conscious.sh prod
+
+# Docker deployment
+./conscious.sh docker
+
+# Run all validation checks
+./conscious.sh test
