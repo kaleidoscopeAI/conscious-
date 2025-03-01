@@ -1,3 +1,26 @@
+CONSCIOUSAI SYSTEM LICENSE
+Copyright (c) 2023 Jacob M. Graham. All Rights Reserved.
+
+This software and associated documentation (the "System") is the exclusive 
+property of Jacob M. Graham ("Creator"). The System is not open source and 
+is protected under copyright laws and international treaties.
+
+STRICTLY PROHIBITED WITHOUT EXPRESS WRITTEN PERMISSION:
+- Reproduction
+- Distribution
+- Modification
+- Reverse Engineering
+- Commercial Use
+- Derivative Works
+
+For licensing inquiries or collaboration proposals, contact:
+jmgraham1000@gmail.com
+
+Unauthorized use will result in legal action under:
+- 17 U.S.C. § 501 (Copyright Infringement)
+- Digital Millennium Copyright Act (DMCA)
+- EU Directive 2001/29/EC
+
 Kaleidoscope AI System: Architecture, Functionality, and Uniqueness
 1. System Architecture
 
