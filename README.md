@@ -1,3 +1,17 @@
+## ⚠️ Intellectual Property Notice
+
+This system is the exclusive property of **Jacob M. Graham**.  
+**Not open source** - All rights reserved under international copyright law.
+
+**Legal Notice**:  
+> Unauthorized reproduction, distribution, or use of this software  
+> will result in immediate legal action under the Digital Millennium  
+> Copyright Act (DMCA) and other applicable laws.
+
+**For Collaboration Inquiries**:  
+> jmgraham1000@gmail.com  
+> (Include "ConsciousAI Licensing" in subject line)
+
 CONSCIOUSAI SYSTEM LICENSE
 Copyright (c) 2023 Jacob M. Graham. All Rights Reserved.
 
